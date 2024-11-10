@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest test --watch --coverage test",
     "start": "tsc-watch --onSuccess 'node -r dotenv-flow/config dist'",
-    "client": "tsc-watch --onSuccess 'node -r dotenv-flow/config dist/client.js'"
+    "client": "tsc-watch --onSuccess 'node -r dotenv-flow/config dist/client.js'",
+    "main": "tsc-watch --onSuccess 'node -r dotenv-flow/config dist/api'"
   },
   "author": "",
   "license": "ISC",
