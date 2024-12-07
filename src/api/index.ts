@@ -8,12 +8,22 @@ const { debug, error } = log('api:index')
 
 async function main() {
   const cred = await api.initSession()
+  debug('cred:', JSON.stringify(cred))
   // const info = await api.sessionInfo(cred)
   const ap = await api.allPositions(cred)
+  debug('positions:', ap.positions.length)
+  ap.positions.forEach(pos => {
+    debug('position:', pos.position.direction, pos.market.epic, pos.position.size)
+  })
 
-  // ap.positions.forEach(pos => {
-  //   debug(pos)
-  // })
+  const silver = await api.createPosition(cred, {
+    epic: 'SILVER',
+    direction: 'BUY',
+    size: 1,
+    guaranteedStop: true,
+    stopLevel: 20,
+    profitLevel: 27,
+  })
 
   const [{ position, market }] = ap.positions
   const stopDistance = market.bid * STOP_PERCENT * 0.01
@@ -32,19 +42,10 @@ async function main() {
 
   // await api.deletePosition(cred, position.dealId)
 
-  const silver = await api.createPosition(cred, {
-    epic: 'SILVER',
-    direction: 'BUY',
-    size: 1,
-    guaranteedStop: true,
-    stopLevel: 20,
-    profitLevel: 27,
-  })
-
   const silverDealRef = await api.getPosition(cred, silver.dealReference)
   debug(silverDealRef)
 }
 
 main().catch((e: AxiosError) => {
-  error(e)
+  error('error:', e.status, e.response?.data)
 })
