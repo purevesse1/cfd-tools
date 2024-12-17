@@ -127,3 +127,10 @@ export interface CreateOrderBody extends CreatePositionBody {
   type: OrderType // Order type
   goodTillDate?: string // Order cancellation date in UTC time (Date format: YYYY-MM-DDTHH:MM:SS (e.g. 2022-06-09T01:01:00))
 }
+
+export interface MarketCategoryNodes {
+  nodes: {
+    id: string
+    name: string
+  }[]
+}

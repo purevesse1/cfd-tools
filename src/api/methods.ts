@@ -1,8 +1,9 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import {
   CreateOrderBody,
   CreatePositionBody,
   DealRef,
+  MarketCategoryNodes,
   OrdersInfo,
   PositionsInfo,
   SessionCred,
@@ -154,6 +155,29 @@ export async function deleteAllPositions(cred: SessionCred): Promise<DealRef[]> 
 
   return response
 }
+
+export async function topLevelMarketCategories(cred: SessionCred): Promise<MarketCategoryNodes> {
+  const response = await sessionApi(cred).get(`/marketnavigation`)
+
+  return response.data
+}
+
+export async function subNodes(
+  cred: SessionCred,
+  nodeId: string,
+  lim?: number,
+): Promise<MarketCategoryNodes> {
+  let response: AxiosResponse<any, any>
+
+  if (lim) {
+    response = await sessionApi(cred).get(`/marketnavigation/${nodeId}?limit=${lim}`)
+  } else {
+    response = await sessionApi(cred).get(`/marketnavigation/${nodeId}`)
+  }
+
+  return response.data
+}
+
 
 function handleAxiosError(error: AxiosError) {
   if (error.response) {
