@@ -156,6 +156,17 @@ export async function deleteAllPositions(cred: SessionCred): Promise<DealRef[]> 
   return response
 }
 
+export async function deleteAllOrders(cred: SessionCred): Promise<DealRef[]> {
+  const response: DealRef[] = []
+  const ao = await allOrders(cred)
+
+  await eachSeries(ao.orders, async item => {
+    response.push(await deleteOrder(cred, item.workingOrderData.dealId))
+  })
+
+  return response
+}
+
 export async function topLevelMarketCategories(cred: SessionCred): Promise<MarketCategoryNodes> {
   const response = await sessionApi(cred).get(`/marketnavigation`)
 
@@ -166,6 +177,23 @@ export async function subNodes(
   cred: SessionCred,
   nodeId: string,
   lim?: number,
+): Promise<MarketCategoryNodes> {
+  let response: AxiosResponse<any, any>
+
+  if (lim) {
+    response = await sessionApi(cred).get(`/marketnavigation/${nodeId}?limit=${lim}`)
+  } else {
+    response = await sessionApi(cred).get(`/marketnavigation/${nodeId}`)
+  }
+
+  return response.data
+}
+
+export async function marketDetails(
+  cred: SessionCred,
+  nodeId: string,
+  searchTerm?: string,
+  epics?: string
 ): Promise<MarketCategoryNodes> {
   let response: AxiosResponse<any, any>
 

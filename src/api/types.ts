@@ -73,6 +73,8 @@ export interface MarketInfo {
   marketModes: ['REGULAR']
 }
 
+
+
 export interface PositionsInfo {
   positions: {
     position: PositionInfo
@@ -81,7 +83,7 @@ export interface PositionsInfo {
 }
 
 export interface OrdersInfo {
-  workingOrders: {
+  orders: {
     workingOrderData: OrderInfo
     marketData: MarketInfo
   }[]

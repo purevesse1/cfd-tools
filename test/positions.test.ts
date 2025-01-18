@@ -7,7 +7,7 @@ import { PositionsInfo, SessionCred } from '../src/api/types'
 
 let cred: SessionCred
 
-describe('API Test', () => {
+describe('API Positions Test', () => {
   beforeAll(async () => {
     cred = await api.initSession()
   })
@@ -20,7 +20,6 @@ describe('API Test', () => {
     const time = await api.serverTime()
     expect(time).toBeTruthy()
   })
-
 
   test('open session', async () => {
     expect(cred.cst).toBeTruthy()
